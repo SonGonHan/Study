@@ -1,22 +1,15 @@
 public class Main {
     public static void main(String[] args) {
-        final int N = 10;
-        var Arr = new double[N];
-        for (int i = 0; i < N; ++i) {
-            Arr[i] = Math.random();
-        }
-        double swap;
-        for (int i = 0; i < N; ++i) {
-            for (int j = N - 1; j > i; --j) {
-                if (Arr[j - 1] > Arr[j]) {
-                    swap = Arr[j - 1];
-                    Arr[j - 1] = Arr[j];
-                    Arr[j] = swap;
+        final int N = 100;
+        int i, j;
+        find_simple:
+        for (i = 2; i < N; ++i) {
+            for (j = 2; j <= Math.sqrt(i); ++j) {
+                if (i % j == 0) {
+                    continue find_simple;
                 }
             }
-        }
-        for (var x : Arr) {
-            System.out.println(x);
+            System.out.println(i);
         }
     }
 }
