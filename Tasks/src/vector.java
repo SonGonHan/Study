@@ -1,78 +1,48 @@
 public class vector {
 
-    private double x;
-    private double y;
-    private double z;
+    private final int[] Values;
+    private final int[] Weights;
+    private int Size = 0;
 
-
-    public vector(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public double length() {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
-    }
-
-    public double scalar_product(final vector V){
-        return this.x * V.x + this.y * V.y + this.z * V.z;
-    }
-
-    public vector vector_product(final vector V){
-        return new vector(
-                this.y * V.z - this.z * V.y,
-                this.z * V.x + this.x * V.z,
-                this.x * V.y - this.y * V.x);
-    }
-
-    public double angle_between(final vector V){
-        return Math.toDegrees(Math.acos(scalar_product(V) / (this.length() * V.length())));
-    }
-
-    public vector addition(final vector V){
-        return new vector(
-                this.x + V.x,
-                this.y + V.y,
-                this.z + V.z);
-    }
-
-    public vector subtraction(final vector V){
-        return new vector(
-                this.x - V.x,
-                this.y - V.y,
-                this.z - V.z);
-    }
-
-    public static vector[] generate(final int N){
-        vector[] Vectors = new vector[N];
-        for (int i = 0; i < N; ++i) {
-            Vectors[i] = new vector(
-                    Math.random() * 2 - 1,
-                    Math.random() * 2 - 1,
-                    Math.random() * 2 - 1);
+    public vector(int[] V, int[] W) {
+        this.Values = V;
+        this.Weights = W;
+        for (int i = 1; i < this.Weights.length; ++i) {
+            this.Weights[i] += this.Weights[i - 1];
         }
-        return Vectors;
+        Size = this.Weights[this.Weights.length - 1];
     }
 
-    @Override
-    public String toString() {
-        return "Vector:" +
-                "\nx = " + x +
-                "\ny = " + y +
-                "\nz = " + z;
+    public int get() {
+        int need_index = (int) (Math.random() * Size) + 1;
+        int l = 0, r = this.Weights.length - 1;
+        while (l < r) {
+            int m = (l + r) / 2;
+            if (need_index < this.Weights[m]){
+                r = m;
+            }
+            else if (need_index > this.Weights[m]){
+                l = m + 1;
+            }
+            else {
+                return Values[m];
+            }
+        }
+        return Values[l];
     }
 
     public static void main(String[] args) {
-        vector[] Vectors = vector.generate(10);
-        System.out.println(Vectors[0]);
-        System.out.println(Vectors[1]);
-        System.out.println(Vectors[0].length());
-        System.out.println(Vectors[0].scalar_product(Vectors[1]));
-        System.out.println(Vectors[0].vector_product(Vectors[1]));
-        System.out.println(Vectors[0].angle_between(Vectors[1]));
-        System.out.println(Vectors[0].addition(Vectors[1]));
-        System.out.println(Vectors[0].subtraction(Vectors[1]));
+        final int N = 1000;
+        int[] V = {0, 1, 2};
+        int[] W = {1, 3, 6};
+        vector Test = new vector(V, W);
+        int[] Arr = {0, 0, 0};
+        for (int i = 0; i < N; ++i) {
+            ++Arr[Test.get()];
+        }
+        for (int i = 0; i < V.length; ++i) {
+            System.out.println((double) Arr[i] / N);
+        }
     }
 
 }
