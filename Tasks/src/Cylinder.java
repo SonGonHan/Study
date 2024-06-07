@@ -1,10 +1,15 @@
-class Cylinder extends SolidOfRevolution{
+public class Cylinder extends SolidOfRevolution{
 
     private final double height;
 
     public Cylinder(double height, double radius) {
-        super(radius, Math.PI * Math.pow(radius, 2) * height);
+        super(radius);
         this.height = height;
+    }
+
+    @Override
+    public double getVolume() {
+        return Math.PI * Math.pow(radius, 2) * height;
     }
 
 }

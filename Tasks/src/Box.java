@@ -1,10 +1,16 @@
-class Box extends Shape{
+public class Box extends Shape{
 
+    private final double volume;
     private double available;
 
     Box(double volume) {
-        super(volume);
+        this.volume = volume;
         available = volume;
+    }
+
+    @Override
+    public double getVolume() {
+        return available;
     }
 
     public boolean add(Shape shape) {

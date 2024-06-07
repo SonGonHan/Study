@@ -1,14 +1,6 @@
-class Shape {
+abstract class Shape {
 
-    private final double volume;
-
-    Shape(double volume) {
-        this.volume = volume;
-    }
-
-    public double getVolume() {
-        return volume;
-    }
+    abstract double getVolume();
 
     public static void main(String[] args) {
         Ball ball = new Ball(4.5);

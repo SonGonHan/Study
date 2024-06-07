@@ -1,7 +1,12 @@
-class Ball extends SolidOfRevolution{
+public class Ball extends SolidOfRevolution{
 
     public Ball(double radius){
-        super(radius, Math.PI * Math.pow(radius, 2));
+        super(radius);
+    }
+
+    @Override
+    public double getVolume() {
+        return Math.PI*Math.pow(radius, 2);
     }
 
 }
