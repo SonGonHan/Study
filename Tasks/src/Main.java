@@ -1,24 +1,22 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        String path = "D:/Projects/Java/Study/Tasks/text.txt";
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        String Text = "", Line;
-        while ((Line = br.readLine()) != null) {
-            Text += Line + " ";
-        }
-        Text = Text.strip();
-        String[] Words = Text.split(" ");
-        int max_idx = 0;
-        for (int idx = 0; idx < Words.length; idx++) {
-            Words[idx] = Words[idx].replaceAll("\\pP", "");
-            if (Words[max_idx].length() < Words[idx].length()) {
-                max_idx = idx;
+
+    public static String check(String word) {
+        for (int i = 0; i < word.length() / 2; ++i) {
+            if (word.charAt(i) != word.charAt(word.length() - 1 - i)) {
+                return "No";
             }
         }
-        System.out.println(Words[max_idx]);
+        return "Yes";
+    }
+
+    public static void main(String[] args) {
+        Scanner console_in = new Scanner(System.in);
+        String word;
+        while (!(word = console_in.nextLine()).isEmpty()) {
+            System.out.println(check(word));
+        }
+        console_in.close();
     }
 }
