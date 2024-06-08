@@ -1,22 +1,24 @@
-import java.util.Collections;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
-        Ball ball = new Ball(4.5);
-        Cylinder cylyinder = new Cylinder(2, 2);
-        Pyramid pyramid = new Pyramid(100, 100);
-
-        Box box = new Box(1000);
-
-        System.out.println(box.add(ball));
-        System.out.println(box.add(cylyinder));
-        System.out.println(box.add(pyramid));
-        
-        ArrayList<Shape> shapes = box.getShapes();
-        Collections.sort(shapes);
-        for (Shape shape : shapes) {
-            System.out.println(shape.toString());
+    public static void main(String[] args) throws IOException {
+        String path = "D:/Projects/Java/Study/Tasks/text.txt";
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        String Text = "", Line;
+        while ((Line = br.readLine()) != null) {
+            Text += Line + " ";
         }
+        Text = Text.strip();
+        String[] Words = Text.split(" ");
+        int max_idx = 0;
+        for (int idx = 0; idx < Words.length; idx++) {
+            Words[idx] = Words[idx].replaceAll("\\pP", "");
+            if (Words[max_idx].length() < Words[idx].length()) {
+                max_idx = idx;
+            }
+        }
+        System.out.println(Words[max_idx]);
     }
 }
