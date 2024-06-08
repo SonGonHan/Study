@@ -8,23 +8,22 @@ public class Main {
         String path = "D:/Projects/Java/Study/Tasks/text.txt";
         Scanner reader = new Scanner(new File(path));
         String Text = "";
+
         while (reader.hasNextLine()) {
             Text += reader.nextLine() + " ";
         }
         reader.close();
-        Scanner console = new Scanner(System.in);
-        System.out.print("Enter word: ");
-        String found_word = (console.nextLine()).toLowerCase().strip();
-        String[] words = Text.split(" ");
-        int count = 0;
-        for (String word : words) {
-            word = word.replaceAll("\\pP", "").toLowerCase().strip();
-            System.out.println(found_word + " " + word);
-            if (word.equals(found_word)) {
-                ++count;
-            }
+
+        Text = Text.replaceAll("\\pP", "").toUpperCase().
+                replaceAll(" ", "").replaceAll("Ё", "Е");
+
+        int[] letter_rate = new int[32];
+        for (char c : Text.toCharArray()) {
+            letter_rate[c - 'А']++;
         }
-        System.out.println(count);
-        console.close();
+
+        for (int i = 0; i < 32; i++) {
+            System.out.println((char)(i + 'А') + ": " + letter_rate[i]);
+        }
     }
 }
