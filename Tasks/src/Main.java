@@ -1,24 +1,17 @@
 import java.util.Arrays;
-import java.util.function.Predicate;
-import java.util.Objects;
+import java.util.function.Function;
 
 public class Main {
 
-    public static <T> T[] filter(T[] Arr, Predicate<T> filter) {
-        int offset = 0;
-        for (int i = 0; i < Arr.length - offset; ++i) {
-            if (filter.test(Arr[i])) {
-                Arr[i] = Arr[Arr.length - ++offset];
-                --i;
-            }
+    public static <T> void fill(T[] Arr, Function<Integer, T> f) {
+        for (int i = 0; i < Arr.length; ++i) {
+            Arr[i] = f.apply(i);
         }
-        return Arrays.copyOf(Arr, Arr.length - offset);
     }
 
     public static void main(String[] args) {
-        String[] array = new String[]{"1rewf ", "feefewf", "a", null, ";l;"};
-
-        String[] newArray = filter(array, Objects::isNull);
-        System.out.println(Arrays.toString(newArray));
+        Integer[] squares = new Integer[10];
+        fill(squares, integer -> integer * integer);
+        System.out.println(Arrays.toString(squares));
     }
 }
