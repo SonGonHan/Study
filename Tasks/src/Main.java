@@ -1,106 +1,25 @@
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
-    public static class MyListIterator<T> implements ListIterator<T> {
-
-        private final LinkedList<T> List;
-        private int index;
-
-        MyListIterator(LinkedList<T> List) {
-            this.List = List;
-            index = -1;
+    public static <K> Map<K, Integer> arrayToMap(K[] ks){
+        Map<K, Integer> map = new HashMap<>();
+        for(K k : ks){
+            map.compute(k, (_, v) -> v == null ? 1 : v + 1);
         }
-
-        @Override
-        public boolean hasNext() {
-            return index + 1 < List.size();
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException("Нет следующего элемента");
-            }
-            return List.get(++index);
-        }
-
-        @Override
-        public boolean hasPrevious() {
-            return index > 0;
-        }
-
-        @Override
-        public T previous() {
-            if (!hasPrevious()) {
-                throw new NoSuchElementException("Нет предшествующего элемента");
-            }
-            return List.get(--index);
-        }
-
-        @Override
-        public int nextIndex() {
-            return index + 1;
-        }
-
-        @Override
-        public int previousIndex() {
-            return index - 1;
-        }
-
-        @Override
-        public void remove() {
-            if (index < 0 || index >= List.size()) {
-                throw new IllegalStateException("Нельзя удалить элемент");
-            }
-            List.remove(index);
-        }
-
-        @Override
-        public void set(T t) {
-            if (index < 0 || index >= List.size()) {
-                throw new IllegalStateException("Нельзя изменить элемент");
-            }
-
-            List.set(index, t);
-        }
-
-        @Override
-        public void add(T t) {
-            if (index < 0 || index > List.size()) {
-                throw new IllegalStateException("Нельзя вставить элемент");
-            }
-            List.add(index, t);
-        }
+        return map;
     }
 
     public static void main(String[] args) {
-        LinkedList<Integer> LL= new LinkedList<>();
-        LL.add(1);
-        LL.add(2);
-        LL.add(3);
-        LL.add(4);
-        MyListIterator<Integer> it = new MyListIterator<>(LL);
-        for (int i = 0; i < LL.size(); ++i) {
-            System.out.print(it.next() + " ");
+        final int N = 100;
+        Integer[] arr = new Integer[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = (int)Math.round(Math.random() * 10);
         }
-        System.out.println();
-        it.set(1000);
-        for (int i = 0; i < 2; ++i) {
-            System.out.print(it.previous() + " ");
+        Map<Integer, Integer> m = arrayToMap(arr);
+        for (Map.Entry<Integer, Integer> entry : m.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
         }
-        System.out.println();
-        it.remove();
-        it = new MyListIterator<>(LL);
-        for (int i = 0; i < LL.size(); ++i) {
-            System.out.print(it.next() + " ");
-        }
-        System.out.println();
-        it.add(-1);
-        it.previous();
-        System.out.print(it.next());
     }
 }
