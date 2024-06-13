@@ -1,25 +1,30 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
-    public static <K> Map<K, Integer> arrayToMap(K[] ks){
-        Map<K, Integer> map = new HashMap<>();
-        for(K k : ks){
-            map.compute(k, (_, v) -> v == null ? 1 : v + 1);
+    public static <K, V> Map<V, Collection<K>> inverse(Map<? extends K, ? extends V> map){
+        Map<V, Collection<K>> inv = new HashMap<>();
+
+        for (var entry : map.entrySet()) {
+            inv.compute(entry.getValue(), (k, v) -> {
+                if (v == null) {
+                    v = new HashSet<>();
+                }
+                v.add(entry.getKey());
+                return v;
+            });
         }
-        return map;
+        
+        return inv;
     }
 
     public static void main(String[] args) {
         final int N = 100;
-        Integer[] arr = new Integer[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = (int)Math.round(Math.random() * 10);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < N; ++i) {
+            map.put(i, (int)Math.round(Math.random() * 10));
         }
-        Map<Integer, Integer> m = arrayToMap(arr);
-        for (Map.Entry<Integer, Integer> entry : m.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
+        var inv = inverse(map);
+        System.out.println(inv);
     }
 }
