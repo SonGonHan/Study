@@ -1,30 +1,32 @@
-import java.util.*;
+class Main {
 
-public class Main {
+    static class name_thr extends Thread {
+        Object lock;
 
-    public static <K, V> Map<V, Collection<K>> inverse(Map<? extends K, ? extends V> map){
-        Map<V, Collection<K>> inv = new HashMap<>();
+        public name_thr(Object lock) {
+            this.lock = lock;
+        }
 
-        for (var entry : map.entrySet()) {
-            inv.compute(entry.getValue(), (k, v) -> {
-                if (v == null) {
-                    v = new HashSet<>();
+        @Override
+        public void run() {
+            while (true) {
+                synchronized (lock) {
+                    try {
+                        System.out.println(getName());
+                        lock.notify();
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                v.add(entry.getKey());
-                return v;
-            });
+            }
         }
-        
-        return inv;
     }
 
-    public static void main(String[] args) {
-        final int N = 100;
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < N; ++i) {
-            map.put(i, (int)Math.round(Math.random() * 10));
-        }
-        var inv = inverse(map);
-        System.out.println(inv);
+    public static void main(String[] args){
+        Object lock = new Object();
+        new name_thr(lock).start();
+        new name_thr(lock).start();
     }
+
 }
