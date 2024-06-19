@@ -1,16 +1,25 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 class Main {
 
-    public static void main(String[] args){
-        Queue<Integer> sharedQueue = new LinkedList<>();
-        final int N = 4;
-        int Cycles = 20;
-        Thread prodThread = new Thread(new Producer(sharedQueue, N, Cycles), "Producer");
-        Thread consThread = new Thread(new Consumer(sharedQueue, Cycles), "Consumer");
-        prodThread.start();
-        consThread.start();
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Repeat {
+        int value();
+    }
+
+    @Repeat(3)
+    static class MyRunnable implements Runnable {
+        @Override
+        public void run() {
+            System.out.println("Hello!");
+        }
+    }
+
+    public static void main(String[] args) {
+        CustomThreadPoolExecutor customThreadPoolExecutor =
+                new CustomThreadPoolExecutor(10);
+        customThreadPoolExecutor.execute(new MyRunnable());
     }
 
 }
